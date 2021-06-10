@@ -23,15 +23,14 @@ const intro = magpieViews.view_generator("intro", {
   trials: 1,
   name: 'intro',
   // If you use JavaScripts Template String `I am a Template String`, you can use HTML <></> and javascript ${} inside
-  text: `This is a sample introduction view.
+  text: `Hello and welcome to this experiment.
             <br />
             <br />
-            The introduction view welcomes the participant and gives general information
-            about the experiment. You are in the <strong>${coin}</strong> group.
+            Before we get started, I want to thank you for your participation.
             <br />
             <br />
-            This is a minimal experiment with one forced choice view. It can serve as a starting point for programming your own experiment.`,
-  buttonText: 'begin the experiment'
+            By clicking on <strong>Next</strong> you will be provided with the instructions.`,
+  buttonText: 'Next'
 });
 
 // For most tasks, you need instructions views
@@ -39,11 +38,37 @@ const instructions = magpieViews.view_generator("instructions", {
   trials: 1,
   name: 'instructions',
   title: 'General Instructions',
-  text: `This is a sample instructions view.
+  text: `In this experiment you will see images of 3D objects.
             <br />
             <br />
-            Tell your participants what they are to do here.`,
-  buttonText: 'go to trials'
+            In each trial there will be two such 3D objects and you have to choose whether they are the <strong>same</strong> or a <strong>different</strong> object.
+            If you think it is the same object in both pictures you press <strong>f</strong> on your keyboard, if you think it is a different object you press <strong>j</strong>.
+            <br />
+            Before the actual experiment begins, you will have a couple of <strong>practice trials</strong> where you can get familiar with the task.
+            <br />
+            It is important that you try to answer as quick as possible but still try to answer correctly.
+            So please make sure that you are not disturbed while doing the experiment.
+            <br />
+            <br />
+            Your participation is voluntary and all of your data is anonymized.
+            <br />
+            <br />
+            By clicking on the button below, you will start your practice trials.`,
+  buttonText: 'start practice trials'
+});
+
+
+const main_instructions = magpieViews.view_generator("instructions", {
+  trials: 1,
+  name: 'main_instructions',
+  title: 'Main Instructions',
+  text: `You have now completed the practice trials.
+            <br />
+            Now the main trials begin. These work exactly as the practice trials.
+            <br />
+            <br />
+            Again, try to answer quickly and correctly at the same time.`,
+  buttonText: 'start main trials'
 });
 
 
@@ -101,19 +126,21 @@ const thanks = magpieViews.view_generator("thanks", {
 * https://magpie-ea.github.io/magpie-docs/01_designing_experiments/01_template_views/#trial-views
 */
 
-
-// Here, we initialize a normal forced_choice view
-const forced_choice_2A = magpieViews.view_generator("forced_choice", {
-  // This will use all trials specified in `data`, you can user a smaller value (for testing), but not a larger value
-  trials: trial_info.forced_choice.length,
-  // name should be identical to the variable name
-  name: 'forced_choice_2A',
-  data: trial_info.forced_choice,
-  // you can add custom functions at different stages through a view's life cycle
-  // hook: {
-  //     after_response_enabled: check_response
-  // }
+const mental_rotation_practice = magpieViews.view_generator("key_press", {
+    trials: practice_trials.key_press.length,
+    name: 'mental_rotation_practice',
+    data: _.shuffle(practice_trials.key_press),
+    pause: 250,
 });
+
+
+const mental_rotation_main = magpieViews.view_generator("key_press", {
+    trials: main_trials.key_press.length,
+    name: 'mental_rotation_main',
+    data: _.shuffle(main_trials.key_press),
+    pause: 250,
+});
+
 
 // There are many more templates available:
 // forced_choice, slider_rating, dropdown_choice, testbox_input, rating_scale, image_selection, sentence_choice,
